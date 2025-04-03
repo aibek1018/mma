@@ -1,0 +1,152 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type WeightClass {
+  id: Int!
+  name: String!
+  fighters: [Fighter!]!
+  rankings: [Ranking!]!
+}
+
+type Ranking {
+  id: Int!
+  weightClass: WeightClass!
+  fighters: [Fighter!]!
+  rank: Int!
+}
+
+type Event {
+  id: Int!
+  name: String!
+  location: String!
+  date: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Fight {
+  id: Int!
+  event: Event!
+}
+
+type FighterToFight {
+  id: Int!
+  fight: Fight!
+  fighter: Fighter!
+  result: String
+  solution: String
+}
+
+type Fighter {
+  id: Int!
+  fullName: String!
+  nationality: String!
+  team: String!
+  wins: Int!
+  losses: Int!
+  draws: Int!
+  knockouts: Int!
+  submissions: Int!
+  createdAt: DateTime!
+  ranking: Ranking!
+  weightClass: WeightClass!
+}
+
+type Query {
+  getFighters: [Fighter!]!
+  getFighter(fullName: String!): Fighter!
+  weightClass(id: Int!): WeightClass!
+  ranking(id: Int!): Ranking!
+  event(id: Int!): Event!
+  fight(id: Int!): Fight!
+  fighterToFight(id: Int!): FighterToFight!
+}
+
+type Mutation {
+  createFighter(createFighterInput: CreateFighterInput!): Fighter!
+  createWeightClass(createWeightClassInput: CreateWeightClassInput!): WeightClass!
+  updateWeightClass(updateWeightClassInput: UpdateWeightClassInput!): WeightClass!
+  removeWeightClass(id: Int!): WeightClass!
+  createRanking(createRankingInput: CreateRankingInput!): Ranking!
+  updateRanking(updateRankingInput: UpdateRankingInput!): Ranking!
+  removeRanking(id: Int!): Ranking!
+  createEvent(createEventInput: CreateEventInput!): Event!
+  updateEvent(updateEventInput: UpdateEventInput!): Event!
+  removeEvent(id: Int!): Event!
+  createFight(createFightInput: CreateFightInput!): Fight!
+  updateFight(updateFightInput: UpdateFightInput!): Fight!
+  removeFight(id: Int!): Fight!
+  createFighterToFight(createFighterToFightInput: CreateFighterToFightInput!): FighterToFight!
+  updateFighterToFight(updateFighterToFightInput: UpdateFighterToFightInput!): FighterToFight!
+  removeFighterToFight(id: Int!): FighterToFight!
+}
+
+input CreateFighterInput {
+  fullName: String!
+  nationality: String!
+  team: String!
+  wins: Int = 0
+  losses: Int = 0
+  draws: Int = 0
+  knockouts: Int = 0
+  submissions: Int = 0
+}
+
+input CreateWeightClassInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateWeightClassInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateRankingInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateRankingInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateEventInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateEventInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateFightInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateFightInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
+
+input CreateFighterToFightInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateFighterToFightInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}
