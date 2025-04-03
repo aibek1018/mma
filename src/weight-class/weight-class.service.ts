@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWeightClassInput } from './dto/create-weight-class.input';
 import { UpdateWeightClassInput } from './dto/update-weight-class.input';
+import { WeightClass } from './entities/weight-class.entity';
+import {InjectRepository} from "@nestjs/typeorm";
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class WeightClassService {
-  create(createWeightClassInput: CreateWeightClassInput) {
-    return 'This action adds a new weightClass';
+
+  constructor(@InjectRepository(WeightClass) private weightClassRepository: Repository<WeightClass>,) {
+  }
+  create(createWeightClassInput: CreateWeightClassInput): Promise<WeightClass> {
+    const weightClass = this.weightClassRepository.create(createWeightClassInput);
+
+    return this.weightClassRepository.save(weightClass);
   }
 
   findAll() {
@@ -24,3 +32,4 @@ export class WeightClassService {
     return `This action removes a #${id} weightClass`;
   }
 }
+

@@ -30,6 +30,7 @@ scalar DateTime
 
 type Fight {
   id: Int!
+  name: String!
   event: Event!
 }
 
@@ -97,13 +98,11 @@ input CreateFighterInput {
 }
 
 input CreateWeightClassInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
 }
 
 input UpdateWeightClassInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  name: String
   id: Int!
 }
 

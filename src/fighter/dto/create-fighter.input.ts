@@ -16,6 +16,8 @@ export class CreateFighterInput {
     @IsNotEmpty()
     team: string;
 
+    
+
     @Field(type => Int, { nullable: true, defaultValue: 0 })
     @Min(0)
     @IsOptional()

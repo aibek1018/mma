@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import {Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Event} from "../../event/entities/event.entity";
 import {FighterToFight} from "../../fighter-to-fight/entities/fighter-to-fight.entity";
 
@@ -9,6 +9,10 @@ export class Fight {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  @Field()
+  name: string;
 
   @Field(type => Event)
   @ManyToOne(() => Event, event => event.fights)

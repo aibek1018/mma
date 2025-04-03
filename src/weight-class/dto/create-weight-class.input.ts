@@ -1,7 +1,13 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
+import { IsAlpha, IsEnum, IsNotEmpty } from 'class-validator';
 
 @InputType()
 export class CreateWeightClassInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field()
+  @IsNotEmpty()
+  @IsAlpha()
+  @IsEnum(["LIGHT" ,"AVERAGE", "HEAVY"],{
+    message: 'Valid name reqiured'
+  })
+  name: "LIGHT" | "AVERAGE" | "HEAVY";
 }
