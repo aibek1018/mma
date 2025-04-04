@@ -3,13 +3,12 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    JoinColumn,
-    ManyToOne, OneToMany,
+    OneToMany,
     PrimaryGeneratedColumn
 } from "typeorm";
 import {Ranking} from "../../ranking/entities/ranking.entity";
-import {WeightClass} from "../../weight-class/entities/weight-class.entity";
-import {FighterToFight} from "../../fighter-to-fight/entities/fighter-to-fight.entity";
+import {Fight} from "../../fight/entities/fight.entity";
+import {WeightClass} from "../../utils/enums";
 
 @Entity()
 @ObjectType()
@@ -19,9 +18,9 @@ export class Fighter {
     @Field(type => Int)
     id: number;
 
-    @Column({ unique: true })
+    @Column({ unique: true})
     @Field()
-    fullName: string;
+    name: string;
 
     @Column()
     @Field()
@@ -30,6 +29,13 @@ export class Fighter {
     @Column()
     @Field()
     team: string;
+
+    @Field()
+    @Column({
+        type: 'enum',
+        enum: WeightClass,
+    })
+    weightClass: WeightClass;
 
     @Column({ default: 0 })
     @Field(type => Int)
@@ -51,23 +57,25 @@ export class Fighter {
     @Field(type => Int)
     submissions?: number;
 
+    @Column({ default: 0 })
+    @Field(type => Int)
+    decisionOfJudge?: number;
+
     @CreateDateColumn()
     @Field()
     createdAt: Date;
 
+    @OneToMany(() => Fight, (fight) => fight.fighter1)
+    @Field(type => [Fight])
+    fights1: Fight[];
 
-    @Field(type => Ranking)
-    @ManyToOne(() => Ranking, ranking=> ranking.fighters, { onDelete: "SET NULL" })
-    @JoinColumn({ name: 'rankingId' })
-    ranking?: Ranking
+    @OneToMany(() => Fight, (fight) => fight.fighter2)
+    @Field(type => [Fight])
+    fights2: Fight[];
 
+    @OneToMany(() => Ranking, (ranking) => ranking.fighter)
+    @Field(type => [Ranking])
+    rankings: Ranking[];
 
-    @Field(type => WeightClass)
-    @ManyToOne(() => WeightClass, weightClass=> weightClass.fighters, { onDelete: "SET NULL" })
-    @JoinColumn({ name: 'weightClassId' })
-    weightClass?: WeightClass
-
-    @OneToMany(() => FighterToFight, fighterToFight => fighterToFight.fighter)
-    fighterToFights: FighterToFight[];
 
 }

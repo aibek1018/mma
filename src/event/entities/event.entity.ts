@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Fight} from "../../fight/entities/fight.entity";
 
 
@@ -12,16 +12,17 @@ export class Event {
 
   @Field()
   @Column()
-  name: string;
+  name?: string;
 
   @Field()
   @Column()
-  location: string;
+  location?: string;
 
   @Field()
-  @CreateDateColumn()
-  date: Date;
+  @Column('date')
+  date?: string;
 
   @OneToMany(() => Fight, fight => fight.event)
+  @Field(type => [Fight])
   fights: Fight[];
 }

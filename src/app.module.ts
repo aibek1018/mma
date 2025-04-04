@@ -8,10 +8,8 @@ import { join } from 'path';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RankingModule } from './ranking/ranking.module';
-import { WeightClassModule } from './weight-class/weight-class.module';
 import { EventModule } from './event/event.module';
 import { FightModule } from './fight/fight.module';
-import { FighterToFightModule } from './fighter-to-fight/fighter-to-fight.module';
 
 @Module({
   imports: [
@@ -31,15 +29,17 @@ import { FighterToFightModule } from './fighter-to-fight/fighter-to-fight.module
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME') as string,
         entities: ["dist/**/*.entity{.ts,.js}"],
-        synchronize: true,
+        synchronize: false,
+        migrations: ['src/migrations/*.ts'],  // Указываем путь к миграциям
+        cli: {
+          migrationsDir: 'src/migrations',  // Папка для миграций
+        },
       }),
       inject: [ConfigService],
     }),
     RankingModule,
-    WeightClassModule,
     EventModule,
     FightModule,
-    FighterToFightModule,
   ],
   controllers: [AppController],
   providers: [AppService],

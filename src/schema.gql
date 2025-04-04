@@ -2,17 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type WeightClass {
-  id: Int!
-  name: String!
-  fighters: [Fighter!]!
-  rankings: [Ranking!]!
-}
-
 type Ranking {
   id: Int!
-  weightClass: WeightClass!
-  fighters: [Fighter!]!
+  fighter: Fighter!
+  weightClass: String!
   rank: Int!
 }
 
@@ -20,7 +13,39 @@ type Event {
   id: Int!
   name: String!
   location: String!
-  date: DateTime!
+  date: String!
+  fights: [Fight!]!
+}
+
+type Fight {
+  id: Int!
+  fighter1: Fighter!
+  fighter2: Fighter!
+  event: Event!
+  winnerId: Int!
+  draw: Int!
+  method: String!
+  status: String!
+  round: Int!
+  time: String!
+}
+
+type Fighter {
+  id: Int!
+  name: String!
+  nationality: String!
+  team: String!
+  weightClass: String!
+  wins: Int!
+  losses: Int!
+  draws: Int!
+  knockouts: Int!
+  submissions: Int!
+  decisionOfJudge: Int!
+  createdAt: DateTime!
+  fights1: [Fight!]!
+  fights2: [Fight!]!
+  rankings: [Ranking!]!
 }
 
 """
@@ -28,82 +53,55 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Fight {
-  id: Int!
-  name: String!
-  event: Event!
-}
-
-type FighterToFight {
-  id: Int!
-  fight: Fight!
-  fighter: Fighter!
-  result: String
-  solution: String
-}
-
-type Fighter {
-  id: Int!
-  fullName: String!
-  nationality: String!
-  team: String!
-  wins: Int!
-  losses: Int!
-  draws: Int!
-  knockouts: Int!
-  submissions: Int!
-  createdAt: DateTime!
-  ranking: Ranking!
-  weightClass: WeightClass!
-}
-
 type Query {
-  getFighters: [Fighter!]!
-  getFighter(fullName: String!): Fighter!
-  weightClass(id: Int!): WeightClass!
+  findAllFighters: [Fighter!]!
+  findFighter(id: Int!): Fighter!
   ranking(id: Int!): Ranking!
-  event(id: Int!): Event!
-  fight(id: Int!): Fight!
-  fighterToFight(id: Int!): FighterToFight!
+  findAllEvents: [Event!]!
+  findEvent(id: Int!): Event!
+  findAllFights: [Fight!]!
+  findFight(id: Int!): Fight!
 }
 
 type Mutation {
   createFighter(createFighterInput: CreateFighterInput!): Fighter!
-  createWeightClass(createWeightClassInput: CreateWeightClassInput!): WeightClass!
-  updateWeightClass(updateWeightClassInput: UpdateWeightClassInput!): WeightClass!
-  removeWeightClass(id: Int!): WeightClass!
+  updateFighter(id: Int!, updateFighterInput: UpdateFighterInput!): Fighter!
+  removeFighter(id: Int!): Boolean!
   createRanking(createRankingInput: CreateRankingInput!): Ranking!
   updateRanking(updateRankingInput: UpdateRankingInput!): Ranking!
   removeRanking(id: Int!): Ranking!
   createEvent(createEventInput: CreateEventInput!): Event!
-  updateEvent(updateEventInput: UpdateEventInput!): Event!
-  removeEvent(id: Int!): Event!
+  updateEvent(id: Int!, updateEventInput: UpdateEventInput!): Event!
+  removeEvent(id: Int!): Boolean!
   createFight(createFightInput: CreateFightInput!): Fight!
-  updateFight(updateFightInput: UpdateFightInput!): Fight!
+  updateFight(id: Int!, updateFightInput: UpdateFightInput!): Fight!
   removeFight(id: Int!): Fight!
-  createFighterToFight(createFighterToFightInput: CreateFighterToFightInput!): FighterToFight!
-  updateFighterToFight(updateFighterToFightInput: UpdateFighterToFightInput!): FighterToFight!
-  removeFighterToFight(id: Int!): FighterToFight!
 }
 
 input CreateFighterInput {
-  fullName: String!
+  name: String!
   nationality: String!
   team: String!
+  weightClass: String!
   wins: Int = 0
   losses: Int = 0
   draws: Int = 0
   knockouts: Int = 0
   submissions: Int = 0
+  decisionOfJudge: Int = 0
 }
 
-input CreateWeightClassInput {
+input UpdateFighterInput {
   name: String!
-}
-
-input UpdateWeightClassInput {
-  name: String
-  id: Int!
+  nationality: String!
+  team: String!
+  weightClass: String!
+  wins: Int
+  losses: Int
+  draws: Int
+  knockouts: Int
+  submissions: Int
+  decisionOfJudge: Int
 }
 
 input CreateRankingInput {
@@ -118,34 +116,29 @@ input UpdateRankingInput {
 }
 
 input CreateEventInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
+  location: String!
+  date: String!
 }
 
 input UpdateEventInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  name: String
+  location: String
+  date: String
 }
 
 input CreateFightInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  fighter1Id: Int!
+  fighter2Id: Int!
+  eventId: Int!
+  status: String! = "scheduled"
 }
 
 input UpdateFightInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateFighterToFightInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateFighterToFightInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  winnerId: Int!
+  draw: Int
+  method: String
+  round: Int!
+  time: String!
+  status: String! = "completed"
 }

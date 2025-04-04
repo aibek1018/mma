@@ -1,7 +1,8 @@
-import {Resolver, Query, Mutation, Args} from '@nestjs/graphql';
+import {Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import {FighterService} from "./fighter.service";
 import {Fighter} from "./entities/fighter.entity";
 import {CreateFighterInput} from "./dto/create-fighter.input";
+import {UpdateFighterInput} from "./dto/update-fighter.input";
 
 
 @Resolver()
@@ -11,16 +12,29 @@ export class FighterResolver {
 
     @Mutation(resolve => Fighter)
     createFighter(@Args('createFighterInput') createFighterInput: CreateFighterInput): Promise<Fighter> {
-        return this.fighterService.createFighter(createFighterInput);
+        return this.fighterService.create(createFighterInput);
     }
 
-    @Query(returns => [Fighter])
-    getFighters(): Promise<Fighter[]> {
+    @Query(returns => [Fighter], { name: 'findAllFighters' })
+    findAll(): Promise<Fighter[]> {
         return this.fighterService.findAll();
     }
-    @Query(returns => Fighter)
-    getFighter(@Args('fullName', {type: () => String}) fullName: string): Promise<Fighter> {
-        return this.fighterService.findOne(fullName);
 
+    @Query(() => Fighter, { name: 'findFighter' })
+    findOne(@Args('id', { type: () => Int }) id: number): Promise<Fighter> {
+        return this.fighterService.findOne(id);
+    }
+
+    @Mutation(() => Fighter)
+    updateFighter(
+        @Args('id', { type: () => Int }) id: number,
+        @Args('updateFighterInput') updateFighterInput: UpdateFighterInput,
+    ): Promise<Fighter> {
+        return this.fighterService.update(id, updateFighterInput);
+    }
+
+    @Mutation(() => Boolean)
+    async removeFighter(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
+        return this.fighterService.remove(id);
     }
 }
