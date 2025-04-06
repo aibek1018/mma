@@ -51,4 +51,9 @@ export class CreateFighterInput {
     @Min(0)
     @IsOptional()
     decisionOfJudge?: number;
+
+    @Field(type => Int)
+    @IsNotEmpty()
+    @Min(1, { message: 'Rank must be a positive integer.' })
+    rank: number;
 }

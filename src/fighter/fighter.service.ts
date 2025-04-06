@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -10,18 +9,36 @@ import { CreateFighterInput } from './dto/create-fighter.input';
 import { UpdateFighterInput } from './dto/update-fighter.input';
 import { Fight } from 'src/fight/entities/fight.entity';
 import { FighterStatisticsInput } from './dto/fighter-statistics.input';
+import { Ranking } from 'src/ranking/entities/ranking.entity';
 
 @Injectable()
 export class FighterService {
   constructor(
     @InjectRepository(Fighter) private fighterRepository: Repository<Fighter>,
     @InjectRepository(Fight) private fightRepository: Repository<Fight>,
+    @InjectRepository(Ranking) private rankingRepository: Repository<Ranking>
   ) {}
 
   async create(createFighterInput: CreateFighterInput): Promise<Fighter> {
-    const fighter = await this.fighterRepository.create(createFighterInput);
-
-    return this.fighterRepository.save(fighter);
+    const fighter = this.fighterRepository.create({
+      name: createFighterInput.name,
+      nationality: createFighterInput.nationality,
+      team: createFighterInput.team,
+      weightClass: createFighterInput.weightClass,
+    });
+  
+    const savedFighter = await this.fighterRepository.save(fighter);
+  
+    const ranking = this.rankingRepository.create({
+      fighter: savedFighter,
+      weightClass: savedFighter.weightClass,
+      rank: createFighterInput.rank,
+    });
+  
+    await this.rankingRepository.save(ranking);
+  
+    savedFighter.rankings = [ranking];
+    return savedFighter;
   }
 
   async findAll(): Promise<Fighter[]> {

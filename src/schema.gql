@@ -114,6 +114,7 @@ input CreateFighterInput {
   knockouts: Int = 0
   submissions: Int = 0
   decisionOfJudge: Int = 0
+  rank: Int!
 }
 
 input UpdateFighterInput {
