@@ -3,6 +3,8 @@ import {EventService} from './event.service';
 import {Event} from './entities/event.entity';
 import {CreateEventInput} from './dto/create-event.input';
 import {UpdateEventInput} from './dto/update-event.input';
+import { UpcomingEventsResponse } from './dto/upcoming-events.response';
+import { UpcomingEventsInput } from './dto/upcoming-events.input';
 
 @Resolver(() => Event)
 export class EventResolver {
@@ -34,4 +36,11 @@ export class EventResolver {
     removeEvent(@Args('id', {type: () => Int}) id: number): Promise<boolean> {
         return this.eventService.remove(id);
     }
+
+    @Query(() => UpcomingEventsResponse)
+    async upcomingEvents(
+      @Args('input') input: UpcomingEventsInput
+    ) {
+      return this.eventService.getUpcomingEvents(input);
+  }
 }

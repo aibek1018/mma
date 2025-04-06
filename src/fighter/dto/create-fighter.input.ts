@@ -1,23 +1,25 @@
-import {IsAlpha, IsNotEmpty, IsOptional, Min} from "class-validator";
+import {IsAlpha, IsEnum, IsNotEmpty, IsOptional, Min} from "class-validator";
 import {Field, InputType, Int} from "@nestjs/graphql";
 import {WeightClass} from "../../utils/enums";
 
 @InputType()
 export class CreateFighterInput {
     @Field()
-    @IsNotEmpty({ message:'Имя не может быть пустым'})
+    @IsNotEmpty({ message:'The name cannot be empty.'})
     name: string;
 
     @Field()
-    @IsNotEmpty()
+    @IsNotEmpty({ message:'The nationality cannot be empty.'})
     nationality: string;
 
     @Field()
-    @IsNotEmpty()
+    @IsNotEmpty({ message:'The team cannot be empty.'})
     team: string;
 
     @Field()
-    @IsNotEmpty()
+    @IsEnum(WeightClass, {
+        message: `Weight class must be one of: ${Object.values(WeightClass).join(', ')}.`
+    })
     weightClass: WeightClass;
 
     @Field(type => Int, { nullable: true, defaultValue: 0 })

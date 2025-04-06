@@ -6,6 +6,7 @@ import {Repository} from "typeorm";
 import {Event} from "./entities/event.entity";
 import {CreateFighterInput} from "../fighter/dto/create-fighter.input";
 import {Fighter} from "../fighter/entities/fighter.entity";
+import { UpcomingEventsInput } from './dto/upcoming-events.input';
 
 @Injectable()
 export class EventService {
@@ -50,4 +51,30 @@ export class EventService {
        return true;
   }
 
+  async getUpcomingEvents(input: UpcomingEventsInput) {
+    const { search, skip = 0, take = 10 } = input;
+  
+    const query = this.eventRepository
+      .createQueryBuilder('event')
+      .leftJoinAndSelect('event.fights', 'fight')
+      .leftJoinAndSelect('fight.fighter1', 'fighter1')
+      .leftJoinAndSelect('fight.fighter2', 'fighter2')
+      .where('event.date > CURRENT_DATE');
+  
+    if (search) {
+      query.andWhere(
+        '(event.name ILIKE :search OR event.location ILIKE :search)',
+        { search: `%${search}%` }
+      );
+    }
+  
+    const [events, total] = await query
+      .orderBy('event.date', 'ASC')
+      .skip(skip)
+      .take(take)
+      .getManyAndCount();
+  
+    return { events, total };
+
+}
 }

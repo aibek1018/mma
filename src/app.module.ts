@@ -29,11 +29,7 @@ import { FightModule } from './fight/fight.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME') as string,
         entities: ["dist/**/*.entity{.ts,.js}"],
-        synchronize: false,
-        migrations: ['src/migrations/*.ts'],  // Указываем путь к миграциям
-        cli: {
-          migrationsDir: 'src/migrations',  // Папка для миграций
-        },
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),

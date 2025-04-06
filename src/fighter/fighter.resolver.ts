@@ -3,6 +3,8 @@ import {FighterService} from "./fighter.service";
 import {Fighter} from "./entities/fighter.entity";
 import {CreateFighterInput} from "./dto/create-fighter.input";
 import {UpdateFighterInput} from "./dto/update-fighter.input";
+import { FightStatisticsResponse } from './dto/fight-statistics.response';
+import { FighterStatisticsInput } from './dto/fighter-statistics.input';
 
 
 @Resolver()
@@ -36,5 +38,12 @@ export class FighterResolver {
     @Mutation(() => Boolean)
     async removeFighter(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
         return this.fighterService.remove(id);
+    }
+
+  @Query(() => FightStatisticsResponse)
+    async fighterStatistics(
+      @Args('input') input: FighterStatisticsInput
+    ) {
+      return this.fighterService.getFightStatistics(input);
     }
 }

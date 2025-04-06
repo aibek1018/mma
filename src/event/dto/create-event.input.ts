@@ -1,18 +1,21 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
-import {IsAlpha, IsNotEmpty} from "class-validator";
+import { InputType, Field } from '@nestjs/graphql';
+import {IsNotEmpty, Matches} from "class-validator";
 
 @InputType()
 export class CreateEventInput {
   @Field()
-  @IsNotEmpty({ message:'Имя не может быть пустым'})
+  @IsNotEmpty({ message:'The name cannot be empty.'})
   name: string;
 
   @Field()
-  @IsNotEmpty()
+  @IsNotEmpty({ message:'The location cannot be empty.'})
   location: string;
 
   @Field()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'The location cannot be empty.' })
+  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
+    message: 'Date must be in the format YYYY-MM-DD.',
+  })
   date: string;
 
 }

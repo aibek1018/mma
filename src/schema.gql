@@ -22,12 +22,12 @@ type Fight {
   fighter1: Fighter!
   fighter2: Fighter!
   event: Event!
-  winnerId: Int!
-  draw: Int!
-  method: String!
-  status: String!
-  round: Int!
-  time: String!
+  winnerId: Int
+  draw: Int
+  method: String
+  status: String
+  round: Int
+  time: Int
 }
 
 type Fighter {
@@ -53,14 +53,39 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type FightStatisticsResponse {
+  fights: [Fight!]!
+  total: Int!
+}
+
+type UpcomingEventsResponse {
+  events: [Event!]!
+  total: Int!
+}
+
 type Query {
   findAllFighters: [Fighter!]!
   findFighter(id: Int!): Fighter!
+  fighterStatistics(input: FighterStatisticsInput!): FightStatisticsResponse!
   ranking(id: Int!): Ranking!
   findAllEvents: [Event!]!
   findEvent(id: Int!): Event!
+  upcomingEvents(input: UpcomingEventsInput!): UpcomingEventsResponse!
   findAllFights: [Fight!]!
   findFight(id: Int!): Fight!
+}
+
+input FighterStatisticsInput {
+  fighterId: Int!
+  search: String
+  take: Int = 10
+  skip: Int = 0
+}
+
+input UpcomingEventsInput {
+  search: String
+  take: Int = 10
+  skip: Int = 0
 }
 
 type Mutation {

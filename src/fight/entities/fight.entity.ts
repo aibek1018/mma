@@ -27,15 +27,15 @@ export class Fight {
   event: Event;
 
 
-  @Field(type => Int)
+  @Field(type => Int, {nullable: true})
   @Column({ nullable: true })
   winnerId?: number;
 
-  @Field(type => Int)
+  @Field(type => Int, {nullable: true})
   @Column({ nullable: true })
   draw?: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({
     type: 'enum',
     enum: MethodOfVictory,
@@ -43,18 +43,19 @@ export class Fight {
   })
   method?: MethodOfVictory;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({
     type: 'enum',
     enum: Status,
+    nullable: true,
   })
   status: Status;
 
-  @Field(type => Int)
+  @Field(type => Int, {nullable: true})
   @Column({ nullable: true })
   round?: number;
 
-  @Field()
+  @Field(type => Int, {nullable: true})
   @Column({ nullable: true })
   time?: string;
 
