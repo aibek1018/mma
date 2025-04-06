@@ -20,7 +20,7 @@ import { FightModule } from './fight/fight.module';
     FighterModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-     imports: [ConfigModule],
+      imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: "postgres",
         host: configService.get('DB_HOST'),
@@ -29,7 +29,7 @@ import { FightModule } from './fight/fight.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME') as string,
         entities: ["dist/**/*.entity{.ts,.js}"],
-        synchronize: true,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
