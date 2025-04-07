@@ -3,7 +3,7 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    OneToMany,
+    OneToMany, OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
 import {Ranking} from "../../ranking/entities/ranking.entity";
@@ -73,9 +73,7 @@ export class Fighter {
     @Field(type => [Fight])
     fights2: Fight[];
 
-    @OneToMany(() => Ranking, (ranking) => ranking.fighter)
-    @Field(type => [Ranking])
-    rankings: Ranking[];
-
+    @OneToOne(() => Ranking, (ranking) => ranking.fighter, { cascade: true })
+    ranking: Ranking;
 
 }

@@ -4,7 +4,6 @@
 
 type Ranking {
   id: Int!
-  fighter: Fighter!
   weightClass: String!
   rank: Int!
 }
@@ -45,7 +44,6 @@ type Fighter {
   createdAt: DateTime!
   fights1: [Fight!]!
   fights2: [Fight!]!
-  rankings: [Ranking!]!
 }
 
 """

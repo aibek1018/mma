@@ -26,18 +26,18 @@ export class FighterService {
       team: createFighterInput.team,
       weightClass: createFighterInput.weightClass,
     });
-  
+
     const savedFighter = await this.fighterRepository.save(fighter);
-  
+
     const ranking = this.rankingRepository.create({
       fighter: savedFighter,
-      weightClass: savedFighter.weightClass,
+      weightClass: createFighterInput.weightClass,
       rank: createFighterInput.rank,
     });
-  
-    await this.rankingRepository.save(ranking);
-  
-    savedFighter.rankings = [ranking];
+
+    const savedRanking = await this.rankingRepository.save(ranking);
+
+    savedFighter.ranking = savedRanking;
     return savedFighter;
   }
 

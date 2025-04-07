@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Fighter} from "../../fighter/entities/fighter.entity";
 import {WeightClass} from "../../utils/enums";
 
@@ -11,9 +11,8 @@ export class Ranking {
   @Field(type => Int)
   id: number;
 
-  @ManyToOne(() => Fighter, (fighter) => fighter.rankings)
-  @Field(type => Fighter)
-  @JoinColumn({ name: 'fighterId' })
+  @OneToOne(() => Fighter, (fighter) => fighter.ranking)
+  @JoinColumn()
   fighter: Fighter;
 
   @Field()
